@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#102a43">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VetDose | Veterinary Medication Calculator</title>
+<style>
+:root{--navy:#102a43;--navy2:#243b53;--teal:#0f9f91;--teal-light:#d9f5ef;--bg:#f3f7fa;--card:#fff;--ink:#172b4d;--muted:#627d98;--line:#d9e2ec;--red:#b42318;--redbg:#fff0ef;--amber:#8a4b08;--amberbg:#fff4df;--shadow:0 8px 24px #102a4310}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}
+header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:white;padding:calc(18px + env(safe-area-inset-top)) 18px 18px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-size:1.2rem;font-weight:800;letter-spacing:.2px}.brand span{color:#6ee7d8}.tagline{color:#c6d6e5;font-size:.82rem;margin-top:3px}.iconbtn{border:1px solid #ffffff55;background:#ffffff12;color:white;border-radius:12px;padding:10px 12px}
+main{max-width:760px;margin:auto;padding:16px 14px 100px}.patient{background:white;border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:var(--shadow)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 2px 12px}.section-head h2{font-size:1.05rem;margin:0}.muted{color:var(--muted);font-size:.88rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}label{font-size:.82rem;font-weight:700;color:var(--navy2)}input,select,textarea{width:100%;border:1px solid #bcccdc;border-radius:11px;background:white;padding:12px;color:var(--ink);min-height:46px}input:focus,select:focus,textarea:focus{outline:3px solid #0f9f9126;border-color:var(--teal)}.unit-input{display:flex;gap:7px}.unit-input input{flex:1}.unit{align-self:center;color:var(--muted);font-size:.85rem}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:16px 0}.tab{border:1px solid var(--line);background:#e8eef4;color:var(--navy2);border-radius:12px;padding:11px 4px;font-weight:750;font-size:.8rem}.tab.active{background:var(--navy);border-color:var(--navy);color:white}
+.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:13px;box-shadow:var(--shadow)}.card h3{margin:0 0 4px;font-size:1.02rem}.card p{margin:4px 0}.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.grow{flex:1;min-width:0}.badge{display:inline-block;border-radius:999px;background:var(--teal-light);color:#086b60;padding:4px 9px;font-size:.73rem;font-weight:800}.badge.warn{background:var(--amberbg);color:var(--amber)}.badge.danger{background:var(--redbg);color:var(--red)}
+.btn{border:0;border-radius:12px;padding:12px 14px;font-weight:800;background:var(--teal);color:white}.btn.secondary{background:#e8eef4;color:var(--navy)}.btn.danger{background:var(--red)}.btn.small{padding:8px 10px;font-size:.83rem}.btn.block{width:100%;margin-top:12px}.calcresult{background:#edf9f6;border:1px solid #a6e3d8;border-radius:14px;padding:14px;margin-top:14px}.calcresult .big{font-size:1.7rem;font-weight:850;color:#086b60;letter-spacing:-.4px}.resultgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}.resultbox{background:#ffffffc9;border-radius:10px;padding:10px}.resultbox small{display:block;color:var(--muted)}.resultbox strong{font-size:1rem;overflow-wrap:anywhere}.warning{padding:11px 12px;border-radius:12px;background:var(--amberbg);color:var(--amber);font-size:.84rem;margin-top:10px}.dangerbox{padding:11px 12px;border-radius:12px;background:var(--redbg);color:var(--red);font-size:.84rem;margin-top:10px}.emergency-hero{background:linear-gradient(130deg,#8e201c,#c24135);color:white;border-radius:18px;padding:17px;margin-bottom:14px}.emergency-hero h2{margin:0 0 5px}.emergency-hero p{margin:0;color:#ffe5e2;font-size:.9rem}.druglist{display:grid;gap:10px}.drug{border:1px solid var(--line);background:white;border-radius:15px;padding:14px}.drug summary{cursor:pointer;font-weight:800;list-style:none;display:flex;justify-content:space-between;gap:10px}.drug summary::-webkit-details-marker{display:none}.drug summary:after{content:"＋";color:var(--teal);font-weight:900}.drug[open] summary:after{content:"−"}.drugform{margin-top:14px;border-top:1px solid var(--line);padding-top:13px}.smallnote{font-size:.78rem;color:var(--muted)}.empty{border:1px dashed #9fb3c8;border-radius:14px;padding:18px;text-align:center;color:var(--muted)}.settingsgroup{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.drug-edit{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:8px;align-items:end;margin:10px 0}.drug-edit input{padding:9px;min-height:42px;font-size:.86rem}.drug-edit label{font-size:.72rem}.bottomnav{position:fixed;bottom:0;left:0;right:0;background:#ffffffef;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:9px 12px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:center;z-index:5}.bottomnav button{max-width:760px;width:100%}.footer{font-size:.76rem;color:var(--muted);text-align:center;margin:20px 4px}
+@media(min-width:600px){main{padding-top:22px}.tabs{gap:9px}.tab{font-size:.9rem}.druglist.two{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div class="topline"><div><div class="brand">Vet<span>Dose</span></div><div class="tagline">Small-animal medication calculator</div></div><button class="iconbtn" id="headerSettings" aria-label="Open settings">⚙ Settings</button></div>
+</header>
+<main>
+ <section class="patient">
+  <div class="section-head"><h2>Patient details</h2><span class="badge">DOGS & CATS</span></div>
+  <div class="grid">
+   <div class="field"><label for="species">Species</label><select id="species"><option value="Dog">Dog</option><option value="Cat">Cat</option></select></div>
+   <div class="field"><label for="weight">Weight</label><div class="unit-input"><input id="weight" type="number" min="0.01" step="0.01" placeholder="e.g. 12.5" inputmode="decimal"><span class="unit">kg</span></div></div>
+  </div>
+  <p class="muted" style="margin:10px 0 0">Patient weight is shared across all calculator sections.</p>
+ </section>
+ <nav class="tabs" aria-label="Main navigation">
+  <button class="tab active" data-tab="calculator">Calculator</button><button class="tab" data-tab="emergency">🚨 Emergency</button><button class="tab" data-tab="protocols">Protocols</button><button class="tab" data-tab="settings">Settings</button>
+ </nav>
+ <section id="calculator" class="panel active">
+  <div class="section-head"><h2>Dose calculator</h2><span class="muted">Metric units</span></div>
+  <div class="card">
+   <div class="grid">
+    <div class="field full"><label for="medication">Medication</label><select id="medication"></select></div>
+    <div class="field"><label for="dose">Prescribed dose</label><input id="dose" type="number" min="0" step="any" placeholder="Enter verified dose"></div>
+    <div class="field"><label for="doseUnit">Dose unit</label><select id="doseUnit"><option value="mg/kg">mg/kg</option><option value="mcg/kg">mcg/kg</option><option value="mg">mg (total dose)</option><option value="mcg">mcg (total dose)</option><option value="mL/kg">mL/kg</option></select></div>
+    <div class="field"><label for="route">Route</label><select id="route"><option>Verify protocol</option><option>PO</option><option>IV</option><option>IM</option><option>SQ</option><option>IN</option><option>Topical</option><option>Other</option></select></div>
+    <div class="field"><label for="frequency">Frequency / interval</label><input id="frequency" placeholder="As prescribed"></div>
+   </div>
+   <button class="btn block" id="calculate">Calculate dose & volume</button>
+   <div id="calcOutput" aria-live="polite"></div>
+  </div>
+  <div class="warning">Always verify the drug, species, indication, route, dose, concentration, and maximum dose against an authoritative veterinary reference before administration. This tool does not select or prescribe a dose.</div>
+ </section>
+ <section id="emergency" class="panel">
+  <div class="emergency-hero"><h2>🚨 Emergency drugs</h2><p>Rapid access to emergency medication records and calculations. Use your clinic's current emergency protocols.</p></div>
+  <div class="warning" style="margin-bottom:14px">This starter library intentionally does not supply unverified emergency doses. Add verified dose protocols and stocked concentrations in Settings before clinical use.</div>
+  <div class="section-head"><h2>Quick access</h2><span class="muted" id="emergencyCount"></span></div>
+  <div id="emergencyList" class="druglist"></div>
+ </section>
+ <section id="protocols" class="panel">
+  <div class="section-head"><h2>Medication library</h2><span class="muted">Your configured protocols</span></div>
+  <div class="card"><p class="muted">Choose a medication to load its saved concentration. Dose protocols are entered and maintained in Settings.</p><div id="protocolList"></div></div>
+ </section>
+ <section id="settings" class="panel">
+  <div class="section-head"><h2>Global settings</h2><span class="muted">Saved on this device</span></div>
+  <div class="card">
+   <h3>Medication concentrations & protocols</h3>
+   <p class="muted">Edit concentration and verified dose per kg for each medication. Concentration changes apply throughout the app.</p>
+   <div class="settingsgroup"><div class="field"><label for="newName">Add medication or emergency drug</label><input id="newName" placeholder="Medication name"></div>
+    <div class="grid" style="margin-top:9px">
+     <div class="field"><label for="newCategory">Category</label><select id="newCategory"><option value="Routine">Routine</option><option value="Emergency">Emergency</option><option value="Reversal">Reversal</option></select></div>
+     <div class="field"><label for="newConcentration">Concentration</label><input id="newConcentration" type="number" min="0" step="any" placeholder="e.g. 10"></div>
+     <div class="field"><label for="newConcUnit">Concentration unit</label><select id="newConcUnit"><option value="mg/mL">mg/mL</option><option value="mcg/mL">mcg/mL</option><option value="units/mL">units/mL</option></select></div>
+     <div class="field"><label for="newDose">Verified dose per kg (optional)</label><input id="newDose" type="number" min="0" step="any" placeholder="Leave blank if unset"></div>
+    </div><button class="btn block" id="addDrug">Add to library</button>
+   </div>
+   <div id="settingsDrugList"></div>
+   <div class="settingsgroup"><h3>Safety & data</h3><p class="smallnote">Data is stored in this browser on this device. Export a backup before clearing browser data. No patient data is sent to a server.</p><div class="row" style="flex-wrap:wrap;margin-top:10px"><button class="btn secondary" id="exportData">Export backup</button><button class="btn secondary" id="importButton">Import backup</button><input id="importFile" type="file" accept="application/json" hidden><button class="btn danger" id="resetData">Reset all data</button></div></div>
+  </div>
+ </section>
+ <p class="footer">VetDose starter • Educational calculation aid, not a substitute for clinical judgment. Validate all protocols before use.</p>
+</main>
+<div class="bottomnav"><button class="btn" id="quickEmergency">🚨 Open Emergency Drugs</button></div>
+<script>
+const STORAGE_KEY = "vetdose-starter-v1";
+const defaults = [
+ {id:"ketamine",name:"Ketamine",category:"Routine",concentration:100,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"dexmedetomidine",name:"Dexmedetomidine",category:"Routine",concentration:0.5,concUnit:"mg/mL",dose:null,doseUnit:"mcg/kg",route:"Verify protocol",maxDose:null},
+ {id:"midazolam",name:"Midazolam",category:"Routine",concentration:5,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"butorphanol",name:"Butorphanol",category:"Routine",concentration:10,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"alfaxalone",name:"Alfaxalone",category:"Routine",concentration:10,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"hydromorphone",name:"Hydromorphone",category:"Routine",concentration:2,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"gabapentin",name:"Gabapentin",category:"Routine",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"PO",maxDose:null},
+ {id:"carprofen",name:"Carprofen",category:"Routine",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"meloxicam",name:"Meloxicam",category:"Routine",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"robenacoxib",name:"Robenacoxib",category:"Routine",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"epinephrine",name:"Epinephrine",category:"Emergency",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify CPR protocol",maxDose:null},
+ {id:"atropine",name:"Atropine",category:"Emergency",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify CPR protocol",maxDose:null},
+ {id:"amiodarone",name:"Amiodarone",category:"Emergency",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify CPR protocol",maxDose:null},
+ {id:"lidocaine",name:"Lidocaine",category:"Emergency",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify CPR protocol",maxDose:null},
+ {id:"dextrose",name:"Dextrose",category:"Emergency",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol and dilution",maxDose:null},
+ {id:"naloxone",name:"Naloxone",category:"Reversal",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"flumazenil",name:"Flumazenil",category:"Reversal",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify protocol",maxDose:null},
+ {id:"atipamezole",name:"Atipamezole",category:"Reversal",concentration:null,concUnit:"mg/mL",dose:null,doseUnit:"mg/kg",route:"Verify product protocol",maxDose:null}
+];
+let db = loadDb();
+let lastCalculation = null;
+function loadDb(){try{const x=JSON.parse(localStorage.getItem(STORAGE_KEY));if(x&&Array.isArray(x.drugs))return x}catch(e){}return {drugs:structuredClone(defaults)}}
+function saveDb(){localStorage.setItem(STORAGE_KEY,JSON.stringify(db))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function fmt(n){return Number.isFinite(n)?n.toLocaleString(undefined,{maximumFractionDigits:5}):"—"}
+function getDrug(id){return db.drugs.find(d=>d.id===id)}
+function selectedDrug(){return getDrug(document.querySelector("#medication").value)}
+function goTab(id){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));if(id==="settings")renderSettings();if(id==="emergency")renderEmergency();if(id==="protocols")renderProtocols();window.scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>goTab(b.dataset.tab)));
+document.querySelector("#headerSettings").onclick=()=>goTab("settings");
+document.querySelector("#quickEmergency").onclick=()=>goTab("emergency");
+function renderSelect(){const sel=document.querySelector("#medication"),old=sel.value;sel.innerHTML=db.drugs.map(d=>`<option value="${esc(d.id)}">${esc(d.name)}${d.category==="Emergency"?" — Emergency":d.category==="Reversal"?" — Reversal":""}</option>`).join("");if(getDrug(old))sel.value=old;loadDrugFields()}
+function loadDrugFields(){const d=selectedDrug();if(!d)return;document.querySelector("#dose").value=d.dose??"";document.querySelector("#doseUnit").value=d.doseUnit||"mg/kg";document.querySelector("#route").value=d.route||"Verify protocol";document.querySelector("#calcOutput").innerHTML="";lastCalculation=null}
+document.querySelector("#medication").addEventListener("change",loadDrugFields);
+document.querySelector("#calculate").onclick=()=>{
+ const d=selectedDrug(),w=Number(document.querySelector("#weight").value),dose=Number(document.querySelector("#dose").value),unit=document.querySelector("#doseUnit").value;
+ const out=document.querySelector("#calcOutput");if(!d||!Number.isFinite(w)||w<=0){out.innerHTML='<div class="dangerbox">Enter a valid patient weight in kilograms.</div>';return}
+ if(document.querySelector("#dose").value.trim()===""||!Number.isFinite(dose)||dose<=0){out.innerHTML='<div class="dangerbox">Enter a verified dose greater than zero. This app does not choose a dose for you.</div>';return}
+ let total,vol=null,unitLabel="mg";if(unit==="mg/kg"){total=dose*w;unitLabel="mg"}else if(unit==="mcg/kg"){total=dose*w;unitLabel="mcg"}else if(unit==="mg"){total=dose;unitLabel="mg"}else if(unit==="mcg"){total=dose;unitLabel="mcg"}else{total=dose*w;unitLabel="mL"}
+ if(unit==="mL/kg"){vol=total}else{
+   const concentration=Number(d.concentration);
+   if(Number.isFinite(concentration)&&concentration>0&&d.concUnit){
+    if(unitLabel==="mg"&&d.concUnit==="mg/mL")vol=total/concentration;
+    else if(unitLabel==="mcg"&&d.concUnit==="mcg/mL")vol=total/concentration;
+    else if(unitLabel==="mg"&&d.concUnit==="mcg/mL")vol=total*1000/concentration;
+    else if(unitLabel==="mcg"&&d.concUnit==="mg/mL")vol=total/1000/concentration;
+   }
+ }
+ const max=d.maxDose!==null&&d.maxDose!==undefined&&d.maxDose!==""?Number(d.maxDose):null;
+ let alert="";if(max!==null&&Number.isFinite(max)&&max>0&&unit.includes("/kg")&&dose>max)alert=`<div class="dangerbox">Entered dose exceeds the configured maximum of ${fmt(max)} ${esc(unit)}. Stop and verify the protocol.</div>`;
+ const volumeHtml=vol!==null?`<div class="resultbox"><small>Volume to draw up</small><strong>${fmt(vol)} mL</strong></div>`:`<div class="resultbox"><small>Volume to draw up</small><strong>Not calculated</strong><small>Set a compatible concentration in Settings.</small></div>`;
+ lastCalculation={date:new Date().toISOString(),species:document.querySelector("#species").value,weightKg:w,drug:d.name,dose,unit,total,unitLabel,volumeMl:vol,route:document.querySelector("#route").value};
+ out.innerHTML=`<div class="calcresult"><span class="badge">CALCULATION</span><div class="big">${fmt(total)} ${unitLabel}</div><div>${esc(d.name)} • ${esc(document.querySelector("#route").value)}</div><div class="resultgrid"><div class="resultbox"><small>Patient</small><strong>${esc(document.querySelector("#species").value)} • ${fmt(w)} kg</strong></div><div class="resultbox"><small>Entered dose</small><strong>${fmt(dose)} ${esc(unit)}</strong></div>${volumeHtml}</div>${alert}<div class="warning">Confirm the selected formulation, concentration, route, and final volume independently before administration.</div><button class="btn secondary block" id="copyResult">Copy calculation summary</button></div>`;
+ document.querySelector("#copyResult").onclick=()=>navigator.clipboard?.writeText(`${lastCalculation.species}, ${w} kg | ${d.name} | dose entered: ${dose} ${unit} | total: ${fmt(total)} ${unitLabel} | volume: ${vol===null?"not calculated":fmt(vol)+" mL"} | route: ${lastCalculation.route}`);
+};
+function renderEmergency(){const list=db.drugs.filter(d=>d.category==="Emergency"||d.category==="Reversal");document.querySelector("#emergencyCount").textContent=`${list.length} entries`;document.querySelector("#emergencyList").innerHTML=list.map(d=>`<details class="drug"><summary><span>${esc(d.name)}</span><span class="badge ${d.concentration?"":"warn"}">${d.concentration?esc(d.concentration+" "+d.concUnit):"Set concentration"}</span></summary><div class="drugform"><p class="smallnote">Saved dose: ${d.dose?esc(d.dose+" "+d.doseUnit):"Not configured"} • Route: ${esc(d.route||"Verify protocol")}</p><button class="btn block" data-use="${esc(d.id)}">Calculate this drug</button><button class="btn secondary block" data-edit="${esc(d.id)}">Edit in Settings</button></div></details>`).join("");document.querySelectorAll("[data-use]").forEach(b=>b.onclick=()=>{renderSelect();document.querySelector("#medication").value=b.dataset.use;loadDrugFields();goTab("calculator")});document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>{goTab("settings");setTimeout(()=>document.querySelector(`[data-drug-edit="${b.dataset.edit}"]`)?.scrollIntoView({behavior:"smooth",block:"center"}),50)})}
+function renderProtocols(){document.querySelector("#protocolList").innerHTML=db.drugs.map(d=>`<div class="row between" style="padding:11px 0;border-bottom:1px solid var(--line)"><div class="grow"><strong>${esc(d.name)}</strong><div class="smallnote">${esc(d.category)} • ${d.concentration?esc(d.concentration+" "+d.concUnit):"No concentration set"} • ${d.dose?esc(d.dose+" "+d.doseUnit):"No saved dose"}</div></div><button class="btn secondary small" data-pick="${esc(d.id)}">Use</button></div>`).join("");document.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{renderSelect();document.querySelector("#medication").value=b.dataset.pick;loadDrugFields();goTab("calculator")})}
+function renderSettings(){document.querySelector("#settingsDrugList").innerHTML=db.drugs.map(d=>`<div class="settingsgroup" data-drug-edit="${esc(d.id)}"><div class="row between"><h3>${esc(d.name)}</h3><span class="badge">${esc(d.category)}</span></div><div class="drug-edit"><div class="field"><label>Name</label><input data-field="name" value="${esc(d.name)}"></div><div class="field"><label>Concentration</label><input data-field="concentration" type="number" min="0" step="any" value="${d.concentration??""}" placeholder="Unset"></div><div class="field"><label>Conc. unit</label><select data-field="concUnit">${["mg/mL","mcg/mL","units/mL"].map(u=>`<option ${d.concUnit===u?"selected":""}>${u}</option>`).join("")}</select></div><button class="btn secondary small" data-save="${esc(d.id)}">Save</button></div><div class="grid"><div class="field"><label>Verified dose per kg (optional)</label><input data-field="dose" type="number" min="0" step="any" value="${d.dose??""}" placeholder="Unset"></div><div class="field"><label>Dose unit</label><select data-field="doseUnit">${["mg/kg","mcg/kg","mL/kg"].map(u=>`<option ${d.doseUnit===u?"selected":""}>${u}</option>`).join("")}</select></div><div class="field"><label>Maximum dose per kg (optional)</label><input data-field="maxDose" type="number" min="0" step="any" value="${d.maxDose??""}" placeholder="Unset"></div><div class="field"><label>Route / protocol note</label><input data-field="route" value="${esc(d.route||"")}" placeholder="Verify protocol"></div></div><div class="row between" style="margin-top:8px"><span class="smallnote">Only save dose data after checking a trusted reference.</span><button class="btn danger small" data-delete="${esc(d.id)}">Delete</button></div></div>`).join("");
+ document.querySelectorAll("[data-save]").forEach(b=>b.onclick=()=>{const d=getDrug(b.dataset.save),wrap=b.closest("[data-drug-edit]");for(const el of wrap.querySelectorAll("[data-field]")){const k=el.dataset.field;if(["concentration","dose","maxDose"].includes(k))d[k]=el.value.trim()===""?null:Number(el.value);else d[k]=el.value;}saveDb();renderSelect();renderSettings();renderEmergency();renderProtocols();});
+ document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>{const d=getDrug(b.dataset.delete);if(confirm(`Delete ${d.name} from this device?`)){db.drugs=db.drugs.filter(x=>x.id!==d.id);saveDb();renderAll()}});
+}
+function renderAll(){renderSelect();renderEmergency();renderProtocols();renderSettings()}
+document.querySelector("#addDrug").onclick=()=>{const name=document.querySelector("#newName").value.trim();if(!name){alert("Enter a medication name.");return}const id=name.toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+Date.now().toString(36);const conc=document.querySelector("#newConcentration").value;const dose=document.querySelector("#newDose").value;db.drugs.push({id,name,category:document.querySelector("#newCategory").value,concentration:conc===""?null:Number(conc),concUnit:document.querySelector("#newConcUnit").value,dose:dose===""?null:Number(dose),doseUnit:"mg/kg",route:"Verify protocol",maxDose:null});saveDb();document.querySelector("#newName").value="";document.querySelector("#newConcentration").value="";document.querySelector("#newDose").value="";renderAll();alert("Medication added. Verify all values before use.")};
+document.querySelector("#exportData").onclick=()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="vetdose-backup.json";a.click();URL.revokeObjectURL(a.href)};
+document.querySelector("#importButton").onclick=()=>document.querySelector("#importFile").click();
+document.querySelector("#importFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!data||!Array.isArray(data.drugs)||!data.drugs.every(d=>d.id&&d.name))throw new Error("Invalid backup");if(confirm(`Import ${data.drugs.length} medication entries and replace the current library?`)){db=data;saveDb();renderAll();alert("Backup imported. Verify values before use.")}}catch(err){alert("Could not import this file. Select a valid VetDose JSON backup.")}e.target.value=""};
+document.querySelector("#resetData").onclick=()=>{if(confirm("Reset all medication settings and return to the starter library? Export a backup first if needed.")&&confirm("Confirm permanent reset of this device's VetDose data?")){db={drugs:structuredClone(defaults)};saveDb();renderAll();document.querySelector("#calcOutput").innerHTML="";alert("Local data reset.")}};
+document.querySelector("#weight").addEventListener("input",()=>{});
+renderAll();
+</script>
+</body>
+</html>
